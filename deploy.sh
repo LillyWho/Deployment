@@ -15,6 +15,10 @@ else
     exit
 fi
 
+# Declares download URLs
+SERVERURL="https://github.com/Dirsec/Server/archive/master.zip"
+MAPURL="https://github.com/Dirsec/Mapbase/archive/master.zip"
+
 # Attempting to install prerequisites
 echo "Attempting to install zip and unzip tools via apt-get"
 apt-get -q update
@@ -29,7 +33,7 @@ echo "Success! directory ~/tf2server created!"
 
 # Downloads server files from github
 echo "Attempting to download server files from github repository"
-wget -q https://github.com/Dirsec/Server/archive/master.zip
+wget -q $SERVERURL
 unzip -v Server-master.zip
 echo "Success! Download and unzip successful!"
 
@@ -39,7 +43,7 @@ cd ~/tf2server/tf2/tf/maps/
 echo "Success! Direcotry has been changed!"
 
 # Attempts to download maps from mapserver at github
-wget -q https://github.com/Dirsec/Mapbase/archive/master.zip
+wget -q $MAPURL
 unzip -v Mapbase-master.zip
 echo "Success! Download and unzip successful!"
 
