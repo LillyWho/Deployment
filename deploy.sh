@@ -4,16 +4,16 @@
 echo "Starting Deployment - the automated Dirsec server provisioning system"
 
 # Checks if provisioning is ran under "gameserver" user
-GAMESERVER="gameserver"
-echo "Checking to see if script is running under seperate user..."
-if [ $USER = $GAMESERVER ]
-then
-    echo "Success! Script is running under gameserver user."
-else
-    echo "Warning, script is not running under seperate gameserver user!"
-    echo "Shutting down for your own safety..."
-    exit
-fi
+# GAMESERVER="gameserver"
+# echo "Checking to see if script is running under seperate user..."
+# if [ $USER = $GAMESERVER ]
+# then
+#     echo "Success! Script is running under gameserver user."
+# else
+#     echo "Warning, script is not running under seperate gameserver user!"
+#     echo "Shutting down for your own safety..."
+#     exit
+# fi
 
 # Declares download URLs
 SERVERURL="https://github.com/Dirsec/Server/archive/master.zip"
@@ -34,7 +34,7 @@ echo "Success! directory ~/tf2server created!"
 # Downloads server files from github
 echo "Attempting to download server files from github repository"
 wget -q $SERVERURL
-unzip -v Server-master.zip
+unzip -v *.zip
 echo "Success! Download and unzip successful!"
 
 # Changes to map directory before downloading maps
@@ -44,7 +44,7 @@ echo "Success! Direcotry has been changed!"
 
 # Attempts to download maps from mapserver at github
 wget -q $MAPURL
-unzip -v Mapbase-master.zip
+unzip -v *.zip
 echo "Success! Download and unzip successful!"
 
 # Cleans up and hands back to user
