@@ -624,18 +624,19 @@ function apache_setup () {
                     case "$i" in
                         public_html)
                             echo "Provisoning content for $i..."
-                            echo "<!DOCTYPE html>
-                            <html>
-                                <head>
-                                    <meta charset="UTF-8">
-                                    <title>$i</title>
-                                </head>
-                                <body>
-                                    <h1> $i </h1>
-                                    <p> Congratulations, apache virtualhosts is working <p>
-                                    <p> Please make sure to replace this template later <p>
-                                </body>
-                            </html>" > /var/www/morgenman.me/$i/index.html
+                            # echo "<!DOCTYPE html>
+                            # <html>
+                            #     <head>
+                            #         <meta charset="UTF-8">
+                            #         <title>$i</title>
+                            #     </head>
+                            #     <body>
+                            #         <h1> $i </h1>
+                            #         <p> Congratulations, apache virtualhosts is working <p>
+                            #         <p> Please make sure to replace this template later <p>
+                            #     </body>
+                            # </html>" > /var/www/morgenman.me/$i/index.html
+                            git clone https://github.com/morgenman/morgenman.me.git /var/www/morgenman.me/$i
                         ;;
 
                         *)
