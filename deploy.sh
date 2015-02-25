@@ -63,7 +63,6 @@ function preliminaries () {
 # the team fortress 2 and minecraft servers, this not only improves process
 # isolation - but also allows us to organise the files better.
 function user_setup () {
-    ›
     # Here is the list of users to add to the server. A brief summery below:
     #
     # +----------------------------------------------------------------+
