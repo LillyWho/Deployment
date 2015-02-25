@@ -150,8 +150,8 @@ function iptables_setup () {
     iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 
     # Opens default ssh port 22
-    echo "Allowing default HTTP webserver port"
-    iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+    # echo "Allowing default HTTP webserver port"
+    # iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 
     # Opens minecraft server port 25565
     echo "Allowing default minecraft server port"
@@ -649,7 +649,6 @@ tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir ~
 
     # Adds server configuration file
     cp /home/teamfortress/configuration/cfg/server.cfg /home/teamfortress/tf2/tf/cfg/server.cfg
-
 
     # Changes motd to something reputable
     cp /home/teamfortress/configuration/motd.txt /home/teamfortress/tf2/tf/motd.txt
