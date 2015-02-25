@@ -736,7 +736,7 @@ quit" > /home/teamfortress/tf2_ds.txt
 
     # Creates server startup script
     echo "#!/bin/sh
-tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir ~/ -steam_script ~/tf2_ds.txt +sv_shutdown_timeout_minutes 360 -autoupdate" > /home/teamfortress/tf.sh
+tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir /home/teamfortress/ -steamcmd_script /home/teamfortress/tf2_ds.txt +sv_shutdown_timeout_minutes 360" > /home/teamfortress/tf.sh
     chmod 755 /home/teamfortress/tf.sh
 
     # Downloads server files
@@ -752,11 +752,21 @@ tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir ~
     # Adds server configuration file
     cp /home/teamfortress/configuration/cfg/server.cfg /home/teamfortress/tf2/tf/cfg/server.cfg
 
+    # Adds replay configuration file
+    cp /home/teamfortress/configuration/cfg/replay.cfg /home/teamfortress/tf2/tf/cfg/replay.cfg
+
     # Changes motd to something reputable
     cp /home/teamfortress/configuration/motd.txt /home/teamfortress/tf2/tf/motd.txt
 
     # Adds addons folder
     cp -r /home/teamfortress/configuration/addons /home/teamfortress/tf2/tf/addons
+
+    # Adds maps over by deleting all the other maps first
+    rm -rf /home/teamfortress/tf2/tf/maps/*.bsp
+
+    # Adds map over from fastdl and unzips everything
+    cp /var/www/dirsec.net/public_html/tf/maps/*.bsp.bz2 /home/teamfortress/tf2/tf/maps/
+    bzip2 -d /home/teamfortress/tf2/tf/maps/*.bsp.bz2
 
     # Changing recursively ownership back to teamfortress user
     chown -R teamfortress:teamfortress /home/teamfortress/
