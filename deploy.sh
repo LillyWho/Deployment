@@ -4,59 +4,156 @@
 # Created to democratcise the provisioning of Dirsec-styled servers
 # Copyright GPLv2 2015.
 
-
+# This is merely a simple welcome message that pronounces the start of the setup
+# script. Over the course of this script, we aim to not only implement a sound
+# security policy, but also setup apache2 virtual hosts, provision the website
+# and fastDL server for team fortress, but also explore automated setup options
+# using git for the team fortress 2 server configuration itself - not to mention
+# creating the basic outlines for the future minecraft server
+#
+# We aim this script to not only be a vital install component of the Katyusha
+# server, but also as documentation for our actions. Even if the server goes
+# up in flame, we should be able to recover completely using only this script.
+# That being said, the problem using this would be the fact taht this is no
+# longer generalized enough to allow setting up other dirsec-styled servers -
+# however, rest assured that we will fix that later with the release of a new
+# script
 echo "Starting Automated Initial Server Setup"
 
 # Checks if the script is run as root, and other actions before commencement
+# The first task of the script is to determine if it is ran as root. We will be
+# changing some fundemental system configurations (such as the ssh daemon), not
+# to mention installing various files and dependencies - therefore if we don't
+# run this as root, there will be no way anything can proccede.
 function preliminaries () {
-    # Checks if the script is ran as root
+
+    # Here, we start with an if/else block where we check using the user id to
+    # see if the script is ran as root. The user id of the root user is 1 -
+    # therefore if it is not ran as root, we exit the script.
     if [[ $EUID -ne 0 ]]; then
         echo "This script must be run as root - retry with 'su root' or 'sudo'"
+
+        # Here, we call an exit code of 1 which terminates the script. In bash,
+        # a regular exit condition would be simply exit - or exit 0. Bascially,
+        # any non-zero exit condition signifies an problem with the script.
+        # In this case, the problem is that we are not running this as root.
         exit 1
     fi
 
-    # First updates oneself
+    # Before we begin, it is essential for the server to update itself. First
+    # we hit the package lists using apt-get --assume-yes update. Note that sudo
+    # is not required due to the fact that we are already running as root. Also,
+    # we are passing apt-get the --assume-yes argument, to avoid the interactive
+    # confirmation that typically comes with apt-get. Next, we simply upgrade
+    # everything using apt-get --assume-yes upgrade. Note that this presents a
+    # risk in itself, because automatic upgrades may fail - but we will take
+    # this since we are assumming this is ran on a clean Ubuntu 14.04 LTS system
     apt-get --assume-yes update
     apt-get --assume-yes upgrade
 
-    # Installs dependencies
+    # Before we procced any further, git would be installed here since we would
+    # be needing to use it in order to not only provision the content for the
+    # website, but also to download essential configuration files.
     apt-get --assume-yes install git
 }
 
-# Creates users and groups along with all the other steps used to set them up
+# The first thing we must accomplish is to create the users. This is not only
+# important for our security policy, but also essential to maintain the system
+# as we will be disabling root login later on. By having seperate users running
+# the team fortress 2 and minecraft servers, this not only improves process
+# isolation - but also allows us to organise the files better.
 function user_setup () {
-    # Declares list of users to add
+    ›
+    # Here is the list of users to add to the server. A brief summery below:
+    #
+    # +----------------------------------------------------------------+
+    # | Username     | Function                                        |
+    # +--------------+-------------------------------------------------+
+    # | peterpacz1   | Main admin user. I'm the creator of the script! |
+    # | morgenman    | Second admin user. Also has sudo access.        |
+    # | teamfortress | Used to run the TF2 server. Unprivileged        |
+    # | minecraft    | Used to run the minecraft server. Unprivileged  |
+    # +--------------+-------------------------------------------------+
+    #
+    # Here the users are added using a for loop - by declaring $i as the
+    # variable that holds the usernames (which are actually strings), we are not
+    # only making the code far more concise - but also making it easier to add
+    # more people to the users list.
+    #
     for i in peterpacz1 morgenman teamfortress minecraft; do
 
-        # Adds the users, create home directory, group, and shell environment
+        # The users are actually added using the Unix useradd command instead of
+        # adduser. Adduser requires interactivity, which we can't support since
+        # this is a bash script. Therefore, we are using the older varient.
+        # However, with this there are some problems. We have to explicitly
+        # give the shell as -s /bin/bash, but also tell it to add the user
+        # into the same group as it's username, and create a home directory -
+        # things that adduser does for us automatically already.
         echo "Adding $i user to system..."
         useradd $i -s /bin/bash -m -U
 
-        # Asks for the user's password, and changes it using chpasswd
+        # Here, we are setting a password for the users that we are adding.
+        # First, the user is prompted for a password securely using the read -s
+        # command, which does not echo output.
+        # Next, the password is passed along with the username to chpasswd in
+        # this syntax:
+        #
+        #      chpasswd username:password
+        #
+        # Without setting the passwords, it would be impossible to login through
+        # SSH (not that we will do that, since we are going to disable SSH
+        # login), but also impossible to su (changeuser) into them as well.
         echo -n "Enter $i's password: "
         read -s password
         echo "Changing $i password..."
         echo "$i:$password" | chpasswd
 
+    # We are running all of this in a for loop, to not have to write these
+    # commands more then once. Here, we are merely using the done keyword to
+    # mark the end of the loop.
     done
 
-    # Creates new SSH group
+    # Rather then allowing all users to login through SSH, we would be creating
+    # a special group of users called ssh-users that would be allowed to login
+    # to the server over SSH. This is important since it will disallow
+    # unprivilleged users from SSH login. We could just allow all users in the
+    # sudo group (admins) to login, but once a while we might want someone who
+    # is not admin, but still needs login over SSH. Right now, we will have
+    # these two groups:
+    #
+    # +------------+-----------------------+----------------------------------+
+    # | Group Name |         Users         |            Function              |
+    # +------------+-----------------------+----------------------------------+
+    # | sudo       | peterpacz1, morgenman | Allowed to use the sudo command. |
+    # | ssh-users  | peterpacz1, morgenman | Allowed to login via ssh         |
+    # +------------+-----------------------+----------------------------------+
+    #
+    # Here we are first adding the ssh-users group. The sudo group already
+    # exists by default.
     groupadd ssh-users
 
-    # Adds users to sudo and ssh group
+    # This segment of the script that actually adds the users to each group.
+    # Once again, using loops.
     for i in peterpacz1 morgenman; do
 
-        # Adds the specified username to the sudo group
+        # We are using the adduser command here instead of usermod or useradd.
+        # This is because despite it's interactivity, adduser supports directly
+        # adding a user to a group without interactive keypresses.
+        # Adds the specified user to the sudo group
         echo "Adding $i user to sudo group..."
         adduser $i sudo
 
-        # Adds the specified username to the sudo group
+        # Adds the specified user to the sudo group
         echo "Adding $i user to ssh-users group..."
         adduser $i ssh-users
     done
 }
 
-# Setups SSH and configures the SSH daemon along with the issue.net banner
+# The function is used to setup the SSH daemon and configure it's main
+# configuration file located at /etc/ssh/sshd_config. It's important to have a
+# sound SSH policy in order to secure one's server - SSH is the first attack
+# vector that the majority of hackers would use, since it allows one to easily
+# gain direct control of the server if impropery configured.
 function ssh_setup () {
     # Change SSH default port
     echo "Change SSH port number to:"
@@ -106,17 +203,21 @@ AN AUTHORIZED USER!!!
     service ssh restart
 }
 
-# Copies sshkeys to their relevant folders in the user's home directories
+# SSH keys are superior over password logins due to the fact that they are not
+# only vastly longer, but also offers a cryptographically sane form of
+# authentication. We will be adding the SSH-keys of the client computers to each
+# newly-created admin user in order to let them login.
 function sshkeys_setup () {
     # Creates SSH folders and authorized_keys
     echo "Starting ssh-keys setup"
     for i in peterpacz1 morgenman; do
 
-        # Adds the specified username to the sudo group
+        # Creates the SSH dotfolder in the user's home directory.
         echo "Creating .ssh folder for $i..."
         mkdir /home/$i/.ssh/
 
-        # Case switch statement to add keys
+        # Case switch statement to add ssh keys (different key depending on the)
+        # username of the admin.
         case "$i" in
             peterpacz1)
                 echo "Adding $i's public key..."
@@ -135,7 +236,11 @@ function sshkeys_setup () {
     done
 }
 
-# Configures basic iptables settings and installs persistant iptables as well
+# Configures basic iptables settings and installs persistant iptables as well.
+# It is important to configure a set of sane iptables rules because it is often
+# the first line of defense against a network intrusion. In our iptables setup,
+# we only open the ports that we need and have a default deny rule for all of
+# the other ports.
 function iptables_setup () {
     # Starts configuring iptables and allows current connections
     echo "Allowing all currently established connections"
@@ -148,10 +253,6 @@ function iptables_setup () {
     # Opens webserver port 80
     echo "Allowing default HTTP webserver port"
     iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-
-    # Opens default ssh port 22
-    # echo "Allowing default HTTP webserver port"
-    # iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 
     # Opens minecraft server port 25565
     echo "Allowing default minecraft server port"
@@ -552,7 +653,7 @@ function apache_setup () {
                             echo "Starting to configure virtualhost file"
                             sed -i '/ServerAdmin webmaster@localhost/c\ServerAdmin morgenman@gmail.com' /etc/apache2/sites-available/morgenman.me.conf
                             sed -i "/DocumentRoot \/var\/www\/html/c\DocumentRoot \/var\/www\/morgenman.me\/$i" /etc/apache2/sites-available/morgenman.me.conf
-                            sed -i "/#ServerName www.example.com/c\ServerName morgenman.io" /etc/apache2/sites-available/morgenman.me.conf
+                            sed -i "/#ServerName www.example.com/c\ServerName morgenman.me" /etc/apache2/sites-available/morgenman.me.conf
                             sed -i '10iServerAlias www.morgenman.me' /etc/apache2/sites-available/morgenman.me.conf
 
                             # Enabling configuration file
@@ -639,6 +740,7 @@ tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir ~
     chmod 755 /home/teamfortress/tf.sh
 
     # Downloads server files
+    chmod -R 777 /home/teamfortress/linux32
     ./update.sh
 
     # Downloads server configuration files
