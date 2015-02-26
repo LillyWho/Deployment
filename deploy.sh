@@ -561,7 +561,7 @@ function apache_setup () {
                             echo "Starting to configure virtualhost file"
                             sed -i '/ServerAdmin webmaster@localhost/c\ServerAdmin hong.shenzhou@gmail.com' /etc/apache2/sites-available/hong.io.conf
                             sed -i '/DocumentRoot \/var\/www\/html/c\DocumentRoot \/var\/www\/hong.io\/public_html' /etc/apache2/sites-available/hong.io.conf
-                            sed -i "/#ServerName www.example.com/c\ServerName $i.hong.io" /etc/apache2/sites-available/hong.io.conf
+                            sed -i "/#ServerName www.example.com/c\ServerName hong.io" /etc/apache2/sites-available/hong.io.conf
                             sed -i '10iServerAlias www.hong.io' /etc/apache2/sites-available/hong.io.conf
 
                             # Enabling configuration file
@@ -793,6 +793,8 @@ tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir /
     # Changing recursively ownership back to teamfortress user
     echo "Recursively changing ownership"
     chown -R teamfortress:teamfortress /home/teamfortress/
+    chown -R teamfortress:teamfortress /var/www/dirsec.net/public_html/tf/replays
+
 }
 
 # Automatically executes all the functions
@@ -811,7 +813,6 @@ function autoexec () {
 
     # Everything done?
     echo "Everything is complete and setup!"
-    iptables -L --line-numbers
     exit 0
 }
 
