@@ -780,8 +780,10 @@ tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir /
 
     # Adds map over from fastdl and unzips everything
     echo "Copying all maps from fastDL into map directory"
+    echo "WARNING: THIS WILL TAKE A LONG TIME"
     cp -v /var/www/dirsec.net/public_html/tf/maps/*.bsp.bz2 /home/teamfortress/tf2/tf/maps/
     echo "Unzipping bz2 map files in map repository"
+    echo "WARNING: THIS WILL TAKE A LONG TIME"
     bzip2 -d --verbose /home/teamfortress/tf2/tf/maps/*.bsp.bz2
 
     # Adds per-map configuration folder
