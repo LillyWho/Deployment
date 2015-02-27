@@ -70,3 +70,8 @@ function sshkeys_setup () {
         chown -R $i:$i
     done
 }
+
+# Calls function. Note that there's no exit command - this script is meant to
+# be used in conjunction with the rest of the bash setup system.
+user_setup
+sshkeys_setup

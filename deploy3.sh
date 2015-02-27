@@ -271,9 +271,6 @@ function rkhunter_setup () {
     rkhunter --update
     rkhunter --propupd
 
-    echo "Starting test run now"
-    sudo sudo rkhunter -c --enable all --disable none --rwo --cronjob
-
     # Start editing rkhunter configuration files to agree with Ubuntu.
     echo "Editing rkhunter configuration options"
     sed -i '/MAIL-ON-WARNING=/c\MAIL-ON-WARNING="peterpacz1@localhost morgenman@localhost"' /etc/rkhunter.conf
