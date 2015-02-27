@@ -19,11 +19,6 @@
 
 # Installs rkhunter and automatically configures it based on known-good values
 function rkhunter_setup () {
-    # rkhunter_setup configuration
-    rkhunter_install_dependencies=true
-    rkhunter_destemail="admin@localhost"
-    rkhunter_disallow_root_ssh=true
-    rkhunter_addcron=true
 
     # Gets the latest rkhunter files from upstream and installs it
     echo "Downloading rkhunter files from upstream"
@@ -44,7 +39,7 @@ function rkhunter_setup () {
 
     # Installs dependencies if required
     echo "Downloading rkhunter dependencies"
-    if [[ $rkhunter_install_dependencies=true ]]; then
+    if [[ $1=true ]]; then
         apt-get --assume-yes install binutils libreadline5 libruby ruby ssl-cert unhide.rb mailutils
     fi
 
@@ -56,7 +51,7 @@ function rkhunter_setup () {
 
     # Start editing rkhunter configuration files to agree with Ubuntu.
     echo "Editing rkhunter configuration options"
-    sed -i "/MAIL-ON-WARNING=/c\MAIL-ON-WARNING=\"$rkhunter_destemail\"" /etc/rkhunter.conf
+    sed -i "/MAIL-ON-WARNING=/c\MAIL-ON-WARNING=\"$2\"" /etc/rkhunter.conf
 
     # Scriptwhitelists
     echo "Starting to whitelist scripts via appending SCRIPTWHITELIST clause"
@@ -78,7 +73,7 @@ function rkhunter_setup () {
     echo 'ALLOWHIDDENFILE="/dev/.initramfs"' >> /etc/rkhunter.conf
 
     # Explicitly disallow SSH root login
-    if [[ $rkhunter_disallow_root_ssh=true ]]; then
+    if [[ $3=true ]]; then
         echo "Explicitly disallow SSH root login"
         echo 'ALLOW_SSH_ROOT_USER=no' >> /etc/rkhunter.conf
     fi
@@ -94,7 +89,7 @@ function rkhunter_setup () {
     echo "Rkhunter configuration complete. Successfully installed."
 
     # add cronjob
-    if [[ $rkhunter_addcron=true ]]; then
+    if [[ $4=true ]]; then
         crontab -l | { cat; echo "* 2 * * * rkhunter --cronjob --update --quiet"; } | crontab -
     fi
 }

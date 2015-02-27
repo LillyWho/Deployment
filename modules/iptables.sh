@@ -19,12 +19,6 @@
 
 # Iptables setup and configuration
 function iptables_setup () {
-    # iptables_setup configuration
-    iptables_persistent=true
-    ssh_portnumber=$i
-    iptables_allow_http=true
-    iptables_allow_tf2=true
-    iptables_allow_tf2_rcon=true
 
     # Starts configuring iptables and allows current connections
     echo "Allowing all currently established connections"
@@ -32,22 +26,22 @@ function iptables_setup () {
 
     # Opens SSH non-default port number
     echo "Allowing non-default SSH port"
-    iptables -A INPUT -p tcp --dport $ssh_portnumber -j ACCEPT
+    iptables -A INPUT -p tcp --dport $1 -j ACCEPT
 
     # Opens webserver port 80
-    if [[ $iptables_allow_http=true ]]; then
+    if [[ $2=true ]]; then
         echo "Allowing default HTTP webserver port"
         iptables -A INPUT -p tcp --dport 80 -j ACCEPT
     fi
 
     # Opens Team Fortress 2 main connection port
-    if [[ $iptables_allow_tf2=true ]]; then
+    if [[ $3=true ]]; then
         echo "Allowing team fortress 2 main port"
         iptables -A INPUT -p udp --dport 27015 -j ACCEPT
     fi
 
     # Opens Team Fortress 2 rcon port
-    if [[ $iptables_persistent=true ]]; then
+    if [[ $4=true ]]; then
         echo "Allowing rcon team fortress 2 port"
         iptables -A INPUT -p tcp --dport 27015 -j ACCEPT
     fi
@@ -65,7 +59,7 @@ function iptables_setup () {
     iptables -L --line-numbers
 
     # Installing iptables persistant to save rules
-    if [[ $iptables_persistent=true ]]; then
+    if [[ $5=true ]]; then
         echo "Installing persistent iptables to save rules"
         apt-get --assume-yes install iptables-persistent
     fi

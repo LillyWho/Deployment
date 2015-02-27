@@ -19,18 +19,14 @@
 
 # Automatically updates the server if needed
 function update () {
-    # update configuration
-    linux_server_update=true
-    linux_server_upgrade=true
-
     # Updates server package lists
-    if [[ $linux_server_update=true ]]; then
+    if [[ $1=true ]]; then
         echo "Updating package lists..."
         apt-get --assume-yes update
     fi
 
     # Upgrades server with new packages
-    if [[ $linux_server_upgrade=true ]]; then
+    if [[ $2=true ]]; then
         echo "Performing automatic server update..."
         apt-get --assume-yes upgrade
     fi

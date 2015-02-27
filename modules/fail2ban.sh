@@ -19,14 +19,6 @@
 
 # Installs the fail2ban dynamic firewall modifier and configures it properly.
 function fail2ban_setup () {
-    # Fail2ban configuration
-    fail2ban_bantime=2592000
-    fail2ban_destemail="admin@localhost"
-    fail2ban_action="action_mwl"
-    fail2ban_install_dependencies=true
-
-    # Passed via argument
-    ssh_port_number = $1
 
     # Installs fail2ban
     apt-get --assume-yes install fail2ban
@@ -34,25 +26,25 @@ function fail2ban_setup () {
     # Copys configuration file over
     cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 
-    # Lengthening bantime to user specified value.
-    echo "Setting bantime to $fail2ban_bantime seconds"
-    sed -i "/bantime  = 600/c\bantime  = $fail2ban_bantime" /etc/fail2ban/jail.local
-
-    # changing destemail to all sudo-enabled admins
-    echo "Changing the destination email for warnings to $fail2ban_destemail"
-    sed -i "/destemail = root@localhost/c\destemail = $fail2ban_destemail" /etc/fail2ban/jail.local
-
-    # Allows detailed mail reports to be emailed after banning
-    echo "Changing action to include the mailing of logs"
-    sed -i "/action = %(action_)s/c\action = %($fail2ban_action)s" /etc/fail2ban/jail.local
-
     # Changes so that port number for SSH is set to non-default port
     echo "Setting SSH port number on Fail2ban to the non default port"
     # Note that this sed uses " " because doublequtoes expand variables
-    sed -i "/port     = ssh/c\port     = $ssh_port_number"
+    sed -i "/port     = ssh/c\port     = $1"
+
+    # Lengthening bantime to user specified value.
+    echo "Setting bantime to $2 seconds"
+    sed -i "/bantime  = 600/c\bantime  = $2" /etc/fail2ban/jail.local
+
+    # changing destemail to all sudo-enabled admins
+    echo "Changing the destination email for warnings to $3"
+    sed -i "/destemail = root@localhost/c\destemail = $3" /etc/fail2ban/jail.local
+
+    # Allows detailed mail reports to be emailed after banning
+    echo "Changing action to include the mailing of logs"
+    sed -i "/action = %(action_)s/c\action = %($4)s" /etc/fail2ban/jail.local
 
     # Installs all the rest of the parts and pieces
-    if [[ $fail2ban_install_dependencies=true ]]; then
+    if [[ $5=true ]]; then
         echo "Installing sendmail and iptables-persistent before restarting service"
         apt-get --assume-yes install sendmail iptables-persistent
     fi

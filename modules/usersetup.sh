@@ -19,12 +19,9 @@
 
 # Creates and configures users
 function user_setup () {
-    # user_setup configuration
-    linux_users=(admin teamfortress)
-    linux_sudo_users=(admin)
 
     # Adds a list of users defined in $users to the system
-    for i in "${linux_users[@]}"; do
+    for i in "${1[@]}"; do
 
         # Uses useradd with args for home directory creation, shell, and group
         echo "Adding $i user to system..."
@@ -38,7 +35,7 @@ function user_setup () {
     done
 
     # This segment of the script that actually adds the users to each group.
-    for i in "${linux_sudo_users[@]}"; do
+    for i in "${2[@]}"; do
 
         # We are using the adduser command here instead of usermod or useradd.
         echo "Adding $i user to sudo group..."
@@ -51,7 +48,7 @@ function user_setup () {
 function sshkeys_setup () {
     # Creates SSH folders and authorized_keys
     echo "Starting ssh-keys setup"
-    for i in "${linux_sudo_users[@]}"; do
+    for i in "${2[@]}"; do
 
         # Creates the SSH dotfolder in the user's home directory.
         echo "Creating .ssh folder for $i..."

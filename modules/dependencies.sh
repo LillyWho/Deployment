@@ -23,7 +23,7 @@ function system_dependencies () {
     git_install=true
 
     # Upgrades server with new packages
-    if [[ $git_install=true ]]; then
+    if [[ $1=true ]]; then
         echo "Installing git system-wide dependency..."
         apt-get --assume-yes install git
     fi
