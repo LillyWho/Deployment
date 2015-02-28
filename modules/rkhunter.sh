@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Automatic update script used on Linux Ubuntu 14.04 servers
+# rkhunter setup script used on Linux Ubuntu 14.04 servers
 # Copyright (C) 2015 Shen Zhou Hong - GNU GPL v 3
 
 # This program is free software: you can redistribute it and/or modify

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Automatic update script used on Linux Ubuntu 14.04 servers
+# TF2 Server Setup Script used on Linux Ubuntu 14.04 servers
 # Copyright (C) 2015 Shen Zhou Hong - GNU GPL v 3
 
 # This program is free software: you can redistribute it and/or modify
@@ -92,9 +92,8 @@ tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir /
 
     # Changing replay upload directory
     echo "Changing replay upload directory to local server instead of master"
-    sed -i "/replay_local_fileserver_path \"/var/www/dirsec.net/public_html/tf/replays\"/c\replay_local_fileserver_path \"/var/www/html/tf/replays\""
-    sed -i "replay_fileserver_host \"www.dirsec.net\"/c\replay_fileserver_host \"$ipaddress\""
-
+    sed -i "/replay_local_fileserver_path \"/var/www/dirsec.net/public_html/tf/replays\"/c\replay_local_fileserver_path \"/var/www/html/tf/replays\"" /home/teamfortress/tf2/tf/cfg/replay.cfg
+    sed -i "replay_fileserver_host \"www.dirsec.net\"/c\replay_fileserver_host \"$ipaddress\"" /home/teamfortress/tf2/tf/cfg/replay.cfg
 
     # Adds map over from fastdl and unzips everything
     echo "Copying all maps from fastDL into map directory"

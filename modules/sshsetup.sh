@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Fail2Ban installer used to harden Linux Ubuntu 14.04 LTS servers.
+# SSH Security Script used to harden Linux Ubuntu 14.04 LTS servers.
 # Copyright (C) 2015 Shen Zhou Hong - GNU GPL v 3
 
 # This program is free software: you can redistribute it and/or modify

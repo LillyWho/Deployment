@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# FastDL server setup script used on Linux Ubuntu 14.04 servers
+# Swap adding script used on Linux Ubuntu 14.04 servers
 # Copyright (C) 2015 Shen Zhou Hong - GNU GPL v 3
 
 # This program is free software: you can redistribute it and/or modify
@@ -17,27 +17,29 @@
 # First checks if the script itself is ran as root by calling check_root module
 ./modules/checkroot.sh
 
-# Installs apache and configures apache virtual hosts
-function apache_setup () {
-    # Installs apache from apt-get
-    echo "Downloading and installing apache2 for apache virtual hosts"
-    apt-get --assume-yes install apache2
+# Adds a swap file to improve server performance
+function addswap () {
+    # Adds the amount of swap specified by the argument
+    fallocate -l $1G /swapfile
 
-    # Provisions maps from git onto website
-    git clone https://github.com/Dirsec/Mapbase.git /var/www/html/tf/maps
-    mkdir /var/www/html/tf/replays
+    # Changes permissions so only root can write to it
+    chmod 600 /swapfile
 
-    # Deletes default apache index.html file
-    rm -v /var/www/html/index.html
-    # Changing ownership of directories
-    chown -R admin:admin /var/www/html/
-    chown -R teamfortress:teamfortress /var/www/html/tf/replays
+    # Actually activates the swap
+    mkswap /swapfile
+    swapon /swapfile
 
-    # Restarting apache2 after setup is complete
-    echo "Apache2 setup complete. Restarting..."
-    service apache2 restart
+    # Makes swapfile permanent
+    echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
+
+    # Tweaks swap settings to optimize performance for TF2 gameservers
+    sysctl vm.vfs_cache_pressure=50
+
+    # Makes cache pressure change permanent
+    echo "vm.vfs_cache_pressure = 50" >> /etc/sysctl.conf
+
 }
 
 # Calls function. Note that there's no exit command - this script is meant to
 # be used in conjunction with the rest of the bash setup system.
-apache_setup
+addswap
