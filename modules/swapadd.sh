@@ -17,29 +17,26 @@
 # First checks if the script itself is ran as root by calling check_root module
 ./modules/checkroot.sh
 
-# Adds a swap file to improve server performance
-function addswap () {
-    # Adds the amount of swap specified by the argument
-    fallocate -l $1G /swapfile
+# Adds the amount of swap specified by the argument
+echo "Starting to allocate a $1 GB swap file for server"
+fallocate -l $1G /swapfile
 
-    # Changes permissions so only root can write to it
-    chmod 600 /swapfile
+# Changes permissions so only root can write to it
+echo "Changing file permissions on swap for security"
+chmod 600 /swapfile
 
-    # Actually activates the swap
-    mkswap /swapfile
-    swapon /swapfile
+# Actually activates the swap
+echo "Activating swapfile."
+mkswap /swapfile
+swapon /swapfile
 
-    # Makes swapfile permanent
-    echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
+# Makes swapfile permanent
+echo "Making swap permanent"
+echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
 
-    # Tweaks swap settings to optimize performance for TF2 gameservers
-    sysctl vm.vfs_cache_pressure=50
+# Tweaks swap settings to optimize performance for TF2 gameservers
+echo "Configuring swap pressure"
+sysctl vm.vfs_cache_pressure=50
 
-    # Makes cache pressure change permanent
-    echo "vm.vfs_cache_pressure = 50" >> /etc/sysctl.conf
-
-}
-
-# Calls function. Note that there's no exit command - this script is meant to
-# be used in conjunction with the rest of the bash setup system.
-addswap
+# Makes cache pressure change permanent
+echo "vm.vfs_cache_pressure = 50" >> /etc/sysctl.conf
