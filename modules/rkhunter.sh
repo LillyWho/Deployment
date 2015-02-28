@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # First checks if the script itself is ran as root by calling check_root module
-./checkroot.sh
+./modules/checkroot.sh
 
 # Installs rkhunter and automatically configures it based on known-good values
 function rkhunter_setup () {
@@ -39,9 +39,7 @@ function rkhunter_setup () {
 
     # Installs dependencies if required
     echo "Downloading rkhunter dependencies"
-    if [[ $1=true ]]; then
-        apt-get --assume-yes install binutils libreadline5 libruby ruby ssl-cert unhide.rb mailutils
-    fi
+    apt-get --assume-yes install binutils libreadline5 libruby ruby ssl-cert unhide.rb mailutils
 
     # Begins configuration
     echo "Starting configuration for rkhunter"
@@ -51,7 +49,7 @@ function rkhunter_setup () {
 
     # Start editing rkhunter configuration files to agree with Ubuntu.
     echo "Editing rkhunter configuration options"
-    sed -i "/MAIL-ON-WARNING=/c\MAIL-ON-WARNING=\"$2\"" /etc/rkhunter.conf
+    sed -i "/MAIL-ON-WARNING=/c\MAIL-ON-WARNING=\"$1\"" /etc/rkhunter.conf
 
     # Scriptwhitelists
     echo "Starting to whitelist scripts via appending SCRIPTWHITELIST clause"
@@ -67,16 +65,14 @@ function rkhunter_setup () {
     echo "Allow hidden directory in dev"
     echo 'ALLOWHIDDENDIR="/dev/.udev"' >> /etc/rkhunter.conf
 
-    echo "Allow other hidden files in dev" >> /etc/rkhunter.conf
+    echo "Allow other hidden files in dev"
     echo 'ALLOWHIDDENFILE="/dev/.blkid.tab"' >> /etc/rkhunter.conf
     echo 'ALLOWHIDDENFILE="/dev/.blkid.tab.old"' >> /etc/rkhunter.conf
     echo 'ALLOWHIDDENFILE="/dev/.initramfs"' >> /etc/rkhunter.conf
 
     # Explicitly disallow SSH root login
-    if [[ $3=true ]]; then
-        echo "Explicitly disallow SSH root login"
-        echo 'ALLOW_SSH_ROOT_USER=no' >> /etc/rkhunter.conf
-    fi
+    echo "Explicitly disallow SSH root login"
+    echo 'ALLOW_SSH_ROOT_USER=no' >> /etc/rkhunter.conf
 
     # Checks configuration against itself and updates signatures
     echo "Rkhunter configuration complete. Checking configuration..."
@@ -89,9 +85,7 @@ function rkhunter_setup () {
     echo "Rkhunter configuration complete. Successfully installed."
 
     # add cronjob
-    if [[ $4=true ]]; then
-        crontab -l | { cat; echo "* 2 * * * rkhunter --cronjob --update --quiet"; } | crontab -
-    fi
+    crontab -l | { cat; echo "* 2 * * * rkhunter --cronjob --update --quiet"; } | crontab -
 }
 
 # Calls function. Note that there's no exit command - this script is meant to

@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # First checks if the script itself is ran as root by calling check_root module
-./checkroot.sh
+./modules/checkroot.sh
 
 # Installs the fail2ban dynamic firewall modifier and configures it properly.
 function fail2ban_setup () {
@@ -36,18 +36,16 @@ function fail2ban_setup () {
     sed -i "/bantime  = 600/c\bantime  = $2" /etc/fail2ban/jail.local
 
     # changing destemail to all sudo-enabled admins
-    echo "Changing the destination email for warnings to $3"
-    sed -i "/destemail = root@localhost/c\destemail = $3" /etc/fail2ban/jail.local
+    echo "Changing the destination email for warnings to admin@localhost"
+    sed -i "/destemail = root@localhost/c\destemail = admin@localhost" /etc/fail2ban/jail.local
 
     # Allows detailed mail reports to be emailed after banning
     echo "Changing action to include the mailing of logs"
-    sed -i "/action = %(action_)s/c\action = %($4)s" /etc/fail2ban/jail.local
+    sed -i "/action = %(action_)s/c\action = %(action_mwl)s" /etc/fail2ban/jail.local
 
     # Installs all the rest of the parts and pieces
-    if [[ $5=true ]]; then
-        echo "Installing sendmail and iptables-persistent before restarting service"
-        apt-get --assume-yes install sendmail iptables-persistent
-    fi
+    echo "Installing sendmail and iptables-persistent before restarting service"
+    apt-get --assume-yes install sendmail iptables-persistent
 
     # Restarting fail2ban service
     service fail2ban stop

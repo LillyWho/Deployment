@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # First checks if the script itself is ran as root by calling check_root module
-./checkroot.sh
+./modules/checkroot.sh
 
 # Installs apache and configures apache virtual hosts
 function apache_setup () {
@@ -27,6 +27,8 @@ function apache_setup () {
     git clone https://github.com/Dirsec/Mapbase.git /var/www/html/tf/maps
     mkdir /var/www/html/tf/replays
 
+    # Deletes default apache index.html file
+    rm -v /var/www/html/index.html
     # Changing ownership of directories
     chown -R admin:admin /var/www/html/
     chown -R teamfortress:teamfortress /var/www/html/tf/replays
