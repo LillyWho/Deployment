@@ -18,7 +18,7 @@
 ./modules/checkroot.sh
 
 # Automatically installs the base team fortress 2 server using SteamPIPE
-function tf2_setup () {
+function tf2setup () {
     # Start message
     echo "Starting to install team fortress gameserver..."
 
