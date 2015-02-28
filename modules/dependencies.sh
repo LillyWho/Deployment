@@ -19,10 +19,10 @@
 
 # Installs system-wide dependencies
 function system_dependencies () {
-    # system_dependencies configuration
-    git_install=true
 
     # Upgrades server with new packages
+    # The first argument ($1) should be the install_git value defined in the
+    # deploy.sh file.
     if [[ $1=true ]]; then
         echo "Installing git system-wide dependency..."
         apt-get --assume-yes install git

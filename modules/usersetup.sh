@@ -20,7 +20,8 @@
 # Creates and configures users
 function user_setup () {
 
-    # Adds a list of users defined in $users to the system
+    # Adds a list of users defined in $users to the system. The argument should
+    # be taking $linux_users from the master script.
     for i in "${1[@]}"; do
 
         # Uses useradd with args for home directory creation, shell, and group
@@ -35,6 +36,7 @@ function user_setup () {
     done
 
     # This segment of the script that actually adds the users to each group.
+    # The argument should be taking $linux_sudo_users from the master script.
     for i in "${2[@]}"; do
 
         # We are using the adduser command here instead of usermod or useradd.
