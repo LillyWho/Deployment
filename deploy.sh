@@ -16,12 +16,6 @@
 
 # Begin declaring global variables.
 
-# The amount of swap in gigabytes to add to the server. It is important to
-# add swap, since the server would be using up lots of resources - at this
-# point the primary bottleneck would be the amount of memory available.
-# The amount of swap should be 4 gigabytes - but it could be specified higher.
-swap_in_gb=4
-
 # Default port number is 40. It's usually better to change the ssh port number
 # to a non standard one (other then 22) - which we have already done here for
 # you. Using a port number lower then 1024 increases security slightly and stops
@@ -60,8 +54,6 @@ fail2ban_bantime=2592000
 
 ./modules/usersetup.sh
 
-./modules/swapadd.sh $swap_in_gb
-
 ./modules/sshsetup.sh $ssh_port $ssh_banner_msg $ssh_login_grace_time
 
 ./modules/iptables.sh $ssh_port $tf2_allow_rcon
@@ -78,5 +70,3 @@ echo "Congratulations! Your Dirsec-Styled Team Fortress 2 server has been setup"
 echo "In order to start the server, change user (su) into 'teamfortress'"
 echo "and simply start a new screen session, followed by running './tf.sh'"
 echo "Enjoy!"
-
-exit 0
