@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Installs dependencies for TF2 setup on Ubuntu 14.04 LTS servers.
+# Automatic update script used on Linux Ubuntu 14.04 servers
 # Copyright (C) 2015 Shen Zhou Hong - GNU GPL v 3
 
 # This program is free software: you can redistribute it and/or modify
@@ -17,18 +17,25 @@
 # First checks if the script itself is ran as root by calling check_root module
 ./checkroot.sh
 
-# Installs system-wide dependencies
-function system_dependencies () {
+# Installs apache and configures apache virtual hosts
+function apache_setup () {
+    # Installs apache from apt-get
+    echo "Downloading and installing apache2 for apache virtual hosts"
+    apt-get --assume-yes install apache2
 
-    # Upgrades server with new packages
-    # The first argument ($1) should be the install_git value defined in the
-    # deploy.sh file.
-    if [[ $1=true ]]; then
-        echo "Installing git system-wide dependency..."
-        apt-get --assume-yes install git
-    fi
+    # Provisions maps from git onto website
+    git clone https://github.com/Dirsec/Mapbase.git /var/www/html/tf/maps
+    mkdir /var/www/html/tf/replays
+
+    # Changing ownership of directories
+    chown -R admin:admin /var/www/html/
+    chown -R teamfortress:teamfortress /var/www/html/tf/replays
+
+    # Restarting apache2 after setup is complete
+    echo "Apache2 setup complete. Restarting..."
+    service apache2 restart
 }
 
 # Calls function. Note that there's no exit command - this script is meant to
 # be used in conjunction with the rest of the bash setup system.
-system_dependencies
+apache_setup
