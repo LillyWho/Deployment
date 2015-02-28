@@ -114,3 +114,4 @@ tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir /
     chown -R teamfortress:teamfortress /var/www/html/tf/replays
 
 }
+tf2setup
