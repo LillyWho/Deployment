@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Automatic update script used on Linux Ubuntu 14.04 servers
+# FastDL server setup script used on Linux Ubuntu 14.04 servers
 # Copyright (C) 2015 Shen Zhou Hong - GNU GPL v 3
 
 # This program is free software: you can redistribute it and/or modify
@@ -17,27 +17,24 @@
 # First checks if the script itself is ran as root by calling check_root module
 ./modules/checkroot.sh
 
-# Installs apache and configures apache virtual hosts
-function apache_setup () {
-    # Installs apache from apt-get
-    echo "Downloading and installing apache2 for apache virtual hosts"
-    apt-get --assume-yes install apache2
+# Installs apache from apt-get
+echo "Downloading and installing apache2 for apache virtual hosts"
+apt-get --assume-yes install apache2
 
-    # Provisions maps from git onto website
-    git clone https://github.com/Dirsec/Mapbase.git /var/www/html/tf/maps
-    mkdir /var/www/html/tf/replays
+# Provisions maps from git onto website
+echo "Downloading maps from the Dirsec Github Repository"
+git clone https://github.com/Dirsec/Mapbase.git /var/www/html/tf/maps
+mkdir /var/www/html/tf/replays
 
-    # Deletes default apache index.html file
-    rm -v /var/www/html/index.html
-    # Changing ownership of directories
-    chown -R admin:admin /var/www/html/
-    chown -R teamfortress:teamfortress /var/www/html/tf/replays
+# Deletes default apache index.html file
+echo "Deleting default apache index.html file"
+rm -v /var/www/html/index.html
 
-    # Restarting apache2 after setup is complete
-    echo "Apache2 setup complete. Restarting..."
-    service apache2 restart
-}
+# Changing ownership of directories
+echo "Changing ownership of the various directories"
+chown -R admin:admin /var/www/html/
+chown -R teamfortress:teamfortress /var/www/html/tf/replays
 
-# Calls function. Note that there's no exit command - this script is meant to
-# be used in conjunction with the rest of the bash setup system.
-apache_setup
+# Restarting apache2 after setup is complete
+echo "Apache2 setup complete. Restarting..."
+service apache2 restart

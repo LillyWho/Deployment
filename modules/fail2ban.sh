@@ -17,41 +17,35 @@
 # First checks if the script itself is ran as root by calling check_root module
 ./modules/checkroot.sh
 
-# Installs the fail2ban dynamic firewall modifier and configures it properly.
-function fail2ban_setup () {
+# Installs fail2ban. Using --assume-yes to prevent interactivity
+echo "Installing fail2ban right now..."
+apt-get --assume-yes install fail2ban
 
-    # Installs fail2ban
-    apt-get --assume-yes install fail2ban
+# Copys configuration the default template configuration file over.
+echo "Copying template configuration file over for editing."
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 
-    # Copys configuration file over
-    cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+# Changes so that port number for SSH is set to non-default port
+echo "Setting SSH port number on Fail2ban to the non default port"
+# Note that this sed uses " " because doublequtoes expand variables
+sed -i "/port     = ssh/c\port     = $1" /etc/fail2ban/jail.local
 
-    # Changes so that port number for SSH is set to non-default port
-    echo "Setting SSH port number on Fail2ban to the non default port"
-    # Note that this sed uses " " because doublequtoes expand variables
-    sed -i "/port     = ssh/c\port     = $1" /etc/fail2ban/jail.local
+# Lengthening bantime to user specified value.
+echo "Setting bantime to $2 seconds"
+sed -i "/bantime  = 600/c\bantime  = $2" /etc/fail2ban/jail.local
 
-    # Lengthening bantime to user specified value.
-    echo "Setting bantime to $2 seconds"
-    sed -i "/bantime  = 600/c\bantime  = $2" /etc/fail2ban/jail.local
+# changing destemail to all sudo-enabled admins
+echo "Changing the destination email for warnings to admin@localhost"
+sed -i "/destemail = root@localhost/c\destemail = admin@localhost" /etc/fail2ban/jail.local
 
-    # changing destemail to all sudo-enabled admins
-    echo "Changing the destination email for warnings to admin@localhost"
-    sed -i "/destemail = root@localhost/c\destemail = admin@localhost" /etc/fail2ban/jail.local
+# Allows detailed mail reports to be emailed after banning
+echo "Changing action to include the mailing of logs"
+sed -i "/action = %(action_)s/c\action = %(action_mwl)s" /etc/fail2ban/jail.local
 
-    # Allows detailed mail reports to be emailed after banning
-    echo "Changing action to include the mailing of logs"
-    sed -i "/action = %(action_)s/c\action = %(action_mwl)s" /etc/fail2ban/jail.local
+# Installs all the rest of the parts and pieces
+echo "Installing sendmail and iptables-persistent before restarting service"
+apt-get --assume-yes install sendmail iptables-persistent
 
-    # Installs all the rest of the parts and pieces
-    echo "Installing sendmail and iptables-persistent before restarting service"
-    apt-get --assume-yes install sendmail iptables-persistent
-
-    # Restarting fail2ban service
-    service fail2ban stop
-    service fail2ban start
-}
-
-# Calls function. Note that there's no exit command - this script is meant to
-# be used in conjunction with the rest of the bash setup system.
-fail2ban_setup
+# Restarting fail2ban service
+service fail2ban stop
+service fail2ban start

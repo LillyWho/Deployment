@@ -17,15 +17,7 @@
 # First checks if the script itself is ran as root by calling check_root module
 ./modules/checkroot.sh
 
-# Installs system-wide dependencies
-function system_dependencies () {
-
-    # Upgrades server with new packages
-
-    echo "Installing git system-wide dependency..."
-    apt-get --assume-yes install git
-}
-
-# Calls function. Note that there's no exit command - this script is meant to
-# be used in conjunction with the rest of the bash setup system.
-system_dependencies
+# Installs git - a dependency needed for the install script to get all the
+# maps and download them - along with server configuration from github.
+echo "Installing git system-wide dependency..."
+apt-get --assume-yes install git

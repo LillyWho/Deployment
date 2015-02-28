@@ -16,6 +16,12 @@
 
 # Begin declaring global variables.
 
+# Adds swapspace measured in Gigabytes into the server. The default value is
+# 4 GB - which should be good enough for the team fortress 2 gameserver.
+# However, a bit less swap is alright - providing you are willing to sacrifice
+# some performance. Swap is configured to be optimal for gamehosting.
+swap_amount_gb=4
+
 # Default port number is 40. It's usually better to change the ssh port number
 # to a non standard one (other then 22) - which we have already done here for
 # you. Using a port number lower then 1024 increases security slightly and stops
@@ -46,6 +52,8 @@ tf2_allow_rcon=false
 # attackers according to amount of time below (30 days).
 fail2ban_bantime=2592000
 
+
+# Begin calling prerequisite modules to prepare server for installation.
 ./modules/checkroot.sh
 
 ./modules/autoupdate.sh
@@ -54,6 +62,9 @@ fail2ban_bantime=2592000
 
 ./modules/usersetup.sh
 
+./modules/swapadd.sh $swap_amount_gb
+
+# Begin setting up basic security infrastructure for linux server.
 ./modules/sshsetup.sh $ssh_port $ssh_banner_msg $ssh_login_grace_time
 
 ./modules/iptables.sh $ssh_port $tf2_allow_rcon
@@ -62,11 +73,16 @@ fail2ban_bantime=2592000
 
 ./modules/rkhunter.sh $rkhunter_destemail
 
+# Begin setting up Team Fortress 2 server.
 ./modules/fastdl.sh
 
 ./modules/tf2setup.sh
 
+# All finished!
 echo "Congratulations! Your Dirsec-Styled Team Fortress 2 server has been setup"
 echo "In order to start the server, change user (su) into 'teamfortress'"
 echo "and simply start a new screen session, followed by running './tf.sh'"
 echo "Enjoy!"
+
+# Exit with success
+exit 0

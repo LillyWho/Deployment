@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Automatic update script used on Linux Ubuntu 14.04 servers
+# Swap adding script used on Linux Ubuntu 14.04 servers
 # Copyright (C) 2015 Shen Zhou Hong - GNU GPL v 3
 
 # This program is free software: you can redistribute it and/or modify
@@ -17,20 +17,26 @@
 # First checks if the script itself is ran as root by calling check_root module
 ./modules/checkroot.sh
 
-# Updates server package lists
-# First variable should be the $server_update value. If set to true, it will
-# automatically hit the package lists and refresh the package cache.
-echo "Updating package lists..."
+# Adds the amount of swap specified by the argument
+echo "Starting to allocate a $1 GB swap file for server"
+fallocate -l $1G /swapfile
 
-# Uses --assume-yes to avoid the interactive prompts - does everything
-# without any user input.
-apt-get --assume-yes update
+# Changes permissions so only root can write to it
+echo "Changing file permissions on swap for security"
+chmod 600 /swapfile
 
-# Upgrades server with new packages
-# Second variable should be set to $server_upgrade. If true, server will
-# also download and install new packages.
-echo "Performing automatic server update..."
+# Actually activates the swap
+echo "Activating swapfile."
+mkswap /swapfile
+swapon /swapfile
 
-# Uses --assume-yes to avoid the interactive prompts - does everything
-# without any user input.
-apt-get --assume-yes upgrade
+# Makes swapfile permanent
+echo "Making swap permanent"
+echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
+
+# Tweaks swap settings to optimize performance for TF2 gameservers
+echo "Configuring swap pressure"
+sysctl vm.vfs_cache_pressure=50
+
+# Makes cache pressure change permanent
+echo "vm.vfs_cache_pressure = 50" >> /etc/sysctl.conf
