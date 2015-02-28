@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # First checks if the script itself is ran as root by calling check_root module
-./checkroot.sh
+./modules/checkroot.sh
 
 # Iptables setup and configuration
 function iptables_setup () {
@@ -29,19 +29,15 @@ function iptables_setup () {
     iptables -A INPUT -p tcp --dport $1 -j ACCEPT
 
     # Opens webserver port 80
-    if [[ $2=true ]]; then
-        echo "Allowing default HTTP webserver port"
-        iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-    fi
+    echo "Allowing default HTTP webserver port"
+    iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 
     # Opens Team Fortress 2 main connection port
-    if [[ $3=true ]]; then
-        echo "Allowing team fortress 2 main port"
-        iptables -A INPUT -p udp --dport 27015 -j ACCEPT
-    fi
+    echo "Allowing team fortress 2 main port"
+    iptables -A INPUT -p udp --dport 27015 -j ACCEPT
 
     # Opens Team Fortress 2 rcon port
-    if [[ $4=true ]]; then
+    if [[ $2=true ]]; then
         echo "Allowing rcon team fortress 2 port"
         iptables -A INPUT -p tcp --dport 27015 -j ACCEPT
     fi
@@ -59,10 +55,8 @@ function iptables_setup () {
     iptables -L --line-numbers
 
     # Installing iptables persistant to save rules
-    if [[ $5=true ]]; then
-        echo "Installing persistent iptables to save rules"
-        apt-get --assume-yes install iptables-persistent
-    fi
+    echo "Installing persistent iptables to save rules"
+    apt-get --assume-yes install iptables-persistent
 }
 
 # Calls function. Note that there's no exit command - this script is meant to

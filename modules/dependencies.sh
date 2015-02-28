@@ -15,18 +15,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # First checks if the script itself is ran as root by calling check_root module
-./checkroot.sh
+./modules/checkroot.sh
 
 # Installs system-wide dependencies
 function system_dependencies () {
 
     # Upgrades server with new packages
-    # The first argument ($1) should be the install_git value defined in the
-    # deploy.sh file.
-    if [[ $1=true ]]; then
-        echo "Installing git system-wide dependency..."
-        apt-get --assume-yes install git
-    fi
+
+    echo "Installing git system-wide dependency..."
+    apt-get --assume-yes install git
 }
 
 # Calls function. Note that there's no exit command - this script is meant to

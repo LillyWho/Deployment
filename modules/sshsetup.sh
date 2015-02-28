@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # First checks if the script itself is ran as root by calling check_root module
-./checkroot.sh
+./modules/checkroot.sh
 
 # Setups and configures the ssh daemon for a more secure SSH
 function ssh_setup () {
@@ -25,41 +25,29 @@ function ssh_setup () {
     sed -i "/Port 22/c\Port $1" /etc/ssh/sshd_config
 
     # Do not allow root login via ssh
-    if [[ $2=false ]]; then
-        echo "Disabling root logins via SSH"
-        sed -i '/PermitRootLogin yes/c\PermitRootLogin no' /etc/ssh/sshd_config
-    fi
+    echo "Disabling root logins via SSH"
+    sed -i '/PermitRootLogin yes/c\PermitRootLogin no' /etc/ssh/sshd_config
 
     # Activate SSH banner
-    if [[ $3=true ]]; then
-        echo "Activating SSH banner"
-        sed -i '/#Banner \/etc\/issue.net/c\Banner \/etc\/issue.net' /etc/ssh/sshd_config
-        echo $4 > /etc/issue.net
-    fi
+    echo "Activating SSH banner"
+    sed -i '/#Banner \/etc\/issue.net/c\Banner \/etc\/issue.net' /etc/ssh/sshd_config
+    echo $2 > /etc/issue.net
 
     # Disable Password Authentication
-    if [[ $5=false ]]; then
-        echo "Disabling password authentication"
-        sed -i '/#PasswordAuthentication yes/c\PasswordAuthentication no' /etc/ssh/sshd_config
-    fi
+    echo "Disabling password authentication"
+    sed -i '/#PasswordAuthentication yes/c\PasswordAuthentication no' /etc/ssh/sshd_config
 
     # Create lower LoginGraceTime
-    if [[ $6=false ]]; then
-        echo "Lowering LoginGraceTime"
-        sed -i "/LoginGraceTime/c\LoginGraceTime $7" /etc/ssh/sshd_config
-    fi
+    echo "Lowering LoginGraceTime"
+    sed -i "/LoginGraceTime/c\LoginGraceTime $3" /etc/ssh/sshd_config
 
     # Append AllowGroups clause to the end of the file
-    if [[ $8=true ]]; then
-        echo "Only allowing the sudo group to login via ssh"
-        echo "AllowGroups sudo" >> /etc/ssh/sshd_config
-    fi
+    echo "Only allowing the sudo group to login via ssh"
+    echo "AllowGroups sudo" >> /etc/ssh/sshd_config
 
     # Append automatic idle client kicker to the end of the file
-    if [[ $9=true ]]; then
-        echo "ClientAliveInterval  300" >> /etc/ssh/sshd_config
-        echo "ClientAliveCountMax 0" >> /etc/ssh/sshd_config
-    fi
+    echo "ClientAliveInterval  300" >> /etc/ssh/sshd_config
+    echo "ClientAliveCountMax 0" >> /etc/ssh/sshd_config
 
     # Restart SSH daemon when complete
     echo "SSH Configuration complete. Restarting."

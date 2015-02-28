@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # First checks if the script itself is ran as root by calling check_root module
-./checkroot.sh
+./modules/checkroot.sh
 
 # Automatically installs the base team fortress 2 server using SteamPIPE
 function tf2_setup () {
@@ -84,6 +84,17 @@ tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir /
     # Adds maps over by deleting all the other maps first
     echo "Removing default maps"
     rm -rf /home/teamfortress/tf2/tf/maps/*.bsp
+
+    # Changing fastDL directory
+    ipaddress=`dig +short myip.opendns.com @resolver1.opendns.com`
+    echo "Changing fastdl directory to local server instead of master"
+    sed -i "/sv_downloadurl \"http://www.dirsec.net/tf\"/c\sv_downloadurl $ipaddress\"\"" /home/teamfortress/tf2/tf/cfg/server.cfg
+
+    # Changing replay upload directory
+    echo "Changing replay upload directory to local server instead of master"
+    sed -i "/replay_local_fileserver_path \"/var/www/dirsec.net/public_html/tf/replays\"/c\replay_local_fileserver_path \"/var/www/html/tf/replays\""
+    sed -i "replay_fileserver_host \"www.dirsec.net\"/c\replay_fileserver_host \"$ipaddress\""
+
 
     # Adds map over from fastdl and unzips everything
     echo "Copying all maps from fastDL into map directory"
