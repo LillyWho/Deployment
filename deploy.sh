@@ -150,8 +150,6 @@ rkhunter_destemail="admin@localhost"
 rkhunter_disallow_root_ssh=true
 rkhunter_addcron=true
 
-# dig +short myip.opendns.com @resolver1.opendns.com
-
 # Definitely don't change these. What are you thinking, modifying my script? :P
 ./modules/checkroot.sh
 

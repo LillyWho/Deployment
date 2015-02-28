@@ -85,6 +85,11 @@ tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir /
     echo "Removing default maps"
     rm -rf /home/teamfortress/tf2/tf/maps/*.bsp
 
+    # Changing fastDL directory
+    ipaddress=`dig +short myip.opendns.com @resolver1.opendns.com`
+    echo "Changing fastdl directory to local server instead of master"
+    sed -i "/sv_downloadurl \"http://www.dirsec.net/tf\"/c\sv_downloadurl $ipaddress\"\"" /home/teamfortress/tf2/tf/cfg/server.cfg
+
     # Adds map over from fastdl and unzips everything
     echo "Copying all maps from fastDL into map directory"
     echo "WARNING: THIS WILL TAKE A LONG TIME"

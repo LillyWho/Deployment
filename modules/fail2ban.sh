@@ -29,7 +29,7 @@ function fail2ban_setup () {
     # Changes so that port number for SSH is set to non-default port
     echo "Setting SSH port number on Fail2ban to the non default port"
     # Note that this sed uses " " because doublequtoes expand variables
-    sed -i "/port     = ssh/c\port     = $1"
+    sed -i "/port     = ssh/c\port     = $1" /etc/fail2ban/jail.local
 
     # Lengthening bantime to user specified value.
     echo "Setting bantime to $2 seconds"
