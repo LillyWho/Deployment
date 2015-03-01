@@ -53,4 +53,4 @@ nano /home/admin/.ssh/authorized_keys
 
 # Changes file permissions so SSH works with it
 chmod -R 700 /home/admin/.ssh/
-chown -R admin:admin
+chown -R admin:admin /home/admin/.ssh/
