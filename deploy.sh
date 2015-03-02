@@ -78,6 +78,9 @@ fail2ban_bantime=2592000
 
 ./modules/tf2setup.sh
 
+# Restarts SSH
+service ssh restart
+
 # All finished!
 echo "Congratulations! Your Dirsec-Styled Team Fortress 2 server has been setup"
 echo "In order to start the server, change user (su) into 'teamfortress'"
