@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Timezone Setup script used on Linux Ubuntu 14.04 servers
+# Copyright (C) 2015 Shen Zhou Hong - GNU GPL v 3
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# First checks if the script itself is ran as root by calling check_root module
+./modules/checkroot.sh
+
+echo "Reconfiguring server timezone using the tzdata package"
+dpkg-reconfigure tzdata
+
+echo "Installing NTP time syncrhonization tool"
+apt-get --assume-yes install ntp
+
+echo "Crass-syncing server with NTP times"
+ntpdate pool.ntp.org
+
+echo "NTP setup complete. System time will now be set in sync"

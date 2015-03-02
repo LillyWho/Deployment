@@ -25,6 +25,10 @@ iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 echo "Allowing non-default SSH port"
 iptables -A INPUT -p tcp --dport $1 -j ACCEPT
 
+# Opens NTP port 123
+echo "Allowing default NTP webserver port"
+iptables -A INPUT -p udp --dport 80 -j ACCEPT
+
 # Opens webserver port 80
 echo "Allowing default HTTP webserver port"
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
