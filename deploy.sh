@@ -62,6 +62,10 @@ fail2ban_bantime=2592000
 
 ./modules/usersetup.sh
 
+# Extra configuration for server stability 
+
+./modules/timezone.sh
+
 ./modules/swapadd.sh $swap_amount_gb
 
 # Begin setting up basic security infrastructure for linux server.
