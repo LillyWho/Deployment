@@ -20,7 +20,7 @@
 # 4 GB - which should be good enough for the team fortress 2 gameserver.
 # However, a bit less swap is alright - providing you are willing to sacrifice
 # some performance. Swap is configured to be optimal for gamehosting.
-swap_amount_gb=4
+swap_amount_gb=8
 
 # Default port number is 40. It's usually better to change the ssh port number
 # to a non standard one (other then 22) - which we have already done here for
