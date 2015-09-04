@@ -17,7 +17,9 @@ Once you have a server, you need to install a clean copy of Ubuntu. Specifically
 This will take a long time. Once it's done, Dirsec would be yours again.
 
 # Installation Guide
-Dirsec is designed to be very easy to use and setup. But you might be unfamiliar with basic aspects of system management and linux server administration. I was, as well. Therefore I'll give you a very detailed guide and walkthrough on how to do it. Experienced sysadmins, all you have to do is to wget the file and run it. 
+Dirsec is designed to be very easy to use and setup. But you might be unfamiliar with basic aspects of system management and linux server administration. I was, as well. Therefore I'll give you a very detailed guide and walkthrough on how to do it. This tutorial is aimed at inexperienced computer users, so I'll be very pedantic throughout and explain everything very clearly. 
+
+Experienced sysadmins, all you have to do is to spinup a blank Ubuntu 14.04 server, clone the repository, and run `deploy.sh` as root.
 
 ## Part 1: Creating a DigitalOcean VPS
 You'll need a Linux Virtual Private Server. At Dirsec, we use a company called Digitalocean.com. They are very reputable, and offer cheap but high quality servers. 
@@ -61,4 +63,23 @@ ssh root@your-ip-address
 Of course, replace `your-ip-address` with the actual IP of your server. An IP address looks like `192.82.83.200`, or `93.20.81.100`
 
 ## Part 3. Run Deployment Script
-(To be written)
+Now that you are in the server, you have to run the deployment script. 
+
+### Note on Server Security
+Usually, this is the part where you'll take time to secure the server, change the password, add non-root users, and configure SSH. Server security is **very important**, as servers are high value targets for hackers. If your server is compromised, some **very bad things will happen**. Your IP address could be blacklisted for sending spam and mailware, and you could lose a valuable piece of IT infrastructure.
+
+Therefore, server security is no joke. You definitely should read up about it on DigitalOcean. They have a fantastic set of tutorials for new sysadmins like you!
+
+However, you probably don't know enough about it now. That's okay. Dirsec's Deployment script will automatically lock down and secure your server using reasonnable settings, and unless you do something exceptionally stupid, it will be fine.
+
+### Running the Script
+You should now be logged in as the root user. You need to run `deploy.sh` as root.
+
+Type this:
+
+`./deploy.sh`
+
+Now sit back, and don't touch the keyboard. This script will take a long time, as it will do many things. 
+
+## Part 4. Post Setup Tasks
+(to be written)
