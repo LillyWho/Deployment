@@ -73,7 +73,7 @@ Therefore, server security is no joke. You definitely should read up about it on
 However, you probably don't know enough about it now. That's okay. Dirsec's Deployment script will automatically lock down and secure your server using reasonnable settings, and unless you do something exceptionally stupid, it will be fine.
 
 ### Running the Script
-You should now be logged in as the root user. You need to run `deploy.sh` as root.
+You should now be logged in as the root user. You need to run `deploy.sh` as root. **Warning:** Ensure you have a good and stable internet connection when you do this. If you run the script, and your connection gets cut off halfway, you need to wipe the server and to redo the installation process.
 
 Type this:
 
