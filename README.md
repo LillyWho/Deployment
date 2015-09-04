@@ -45,4 +45,20 @@ This part is important. Dirsec is only tested on a Ubuntu 14.04 LTS x64 image. T
 Turn on private networking, but leave everything else (including IPv6) off for now. Once this is all done, doublecheck your settings and hit the Create Droplet button at the bottom.
 
 ## Part 2. Access Server
+You will now have to SSH into the server. Digitalocean itself has a fantastic tutorial about this, as well about navigating the command line environment of Linux servers.
+
+[Read about it here.](https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh)
+
+The linux command line environment can be a strange and scary place. Therefore, it's recommanded to read this tutorial on Linux Fundementals first, also from Digitalocean.
+
+[Read about it here.](https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal)
+
+Basically, you would open your terminal and write
+```
+ssh root@your-ip-address
+```
+
+Of course, replace `your-ip-address` with the actual IP of your server. An IP address looks like `192.82.83.200`, or `93.20.81.100`
+
+## Part 3. Run Deployment Script
 (To be written)
