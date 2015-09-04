@@ -47,5 +47,6 @@ echo "Installing sendmail and iptables-persistent before restarting service"
 apt-get --assume-yes install sendmail iptables-persistent
 
 # Restarting fail2ban service
+echo "Restarting fail2ban service"
 service fail2ban stop
 service fail2ban start
