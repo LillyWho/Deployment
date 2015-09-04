@@ -90,6 +90,7 @@ echo "Congratulations! Your Dirsec-Styled Team Fortress 2 server has been setup"
 echo "In order to start the server, change user (su) into 'teamfortress'"
 echo "and simply start a new screen session, followed by running './tf.sh'"
 echo "Enjoy!"
-
+echo "NOTE! SOMETIMES SSH DOES NOT WORK AFTER SETUP!!!"
+echo "in this case, run 'sudo service ssh restart' "
 # Exit with success
 exit 0
