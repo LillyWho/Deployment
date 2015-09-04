@@ -35,8 +35,8 @@ echo "Disabling password authentication"
 sed -i '/#PasswordAuthentication yes/c\PasswordAuthentication no' /etc/ssh/sshd_config
 
 # Create lower LoginGraceTime
-echo "Lowering LoginGraceTime"
-sed -i "/LoginGraceTime/c\LoginGraceTime $3" /etc/ssh/sshd_config
+# echo "Lowering LoginGraceTime"
+# sed -i "/LoginGraceTime/c\LoginGraceTime $3" /etc/ssh/sshd_config
 
 # Append AllowGroups clause to the end of the file
 echo "Only allowing the sudo group to login via ssh"
