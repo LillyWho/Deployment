@@ -96,6 +96,12 @@ sed -i "/replay_fileserver_host/c\replay_fileserver_host \"$ipaddress\"" /home/t
 # Adds map over from fastdl and unzips everything
 echo "Copying all maps from fastDL into map directory"
 echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "Now you have to wait ;)"
 cp -v /var/www/html/tf/maps/*.bsp.bz2 /home/teamfortress/tf2/tf/maps/
 
 # Unzips compressed map files over.
