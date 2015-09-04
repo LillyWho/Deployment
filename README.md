@@ -79,7 +79,24 @@ Type this:
 
 `./deploy.sh`
 
-Now sit back, and don't touch the keyboard. This script will take a long time, as it will do many things. 
+Now sit back, and don't touch the keyboard. This script will take a long time, as it will do many things.
 
 ## Part 4. Post Setup Tasks
 (to be written)
+
+Somepoint, the script will tell you that it's done doing things. At this point, your copy of Dirsec is complete! All you need to do now is to run it.
+
+Usually, you would do `./tf.sh` - and it would run automatically. If you need to update Dirsec, you would do `./update.sh`. However, if you run `./tf.sh` right now, it will use your current terminal screen. That means you can't log off. If you log off, your instance would be killed, and the server would stop.
+
+Needless to say, this isn't optimal. That's why you should install `screen`, and use a virtual terminal to run dirsec. This will keep the thing running even when you are logged out of your server, and it will keep going effectively forever.
+
+Install screen by doing
+```
+apt-get install screen
+```
+
+Say `yes`, and it will install it for you.
+
+You will have to read a bit about how to use `screen`, but DigitalOcean has tutorials about it :)
+
+Enjoy!
