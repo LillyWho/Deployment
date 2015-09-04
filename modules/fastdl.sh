@@ -23,6 +23,14 @@ apt-get --assume-yes install apache2
 
 # Provisions maps from git onto website
 echo "Downloading maps from the Dirsec Github Repository"
+echo "Copying all maps from fastDL into map directory"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "WARNING: THIS WILL TAKE A LONG TIME"
+echo "Now you have to wait ;)"
 git clone https://github.com/Dirsec/Mapbase.git /var/www/html/tf/maps
 mkdir /var/www/html/tf/replays
 
