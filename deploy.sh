@@ -69,7 +69,7 @@ fail2ban_bantime=2592000
 ./modules/swapadd.sh $swap_amount_gb
 
 # Begin setting up basic security infrastructure for linux server.
-./modules/sshsetup.sh $ssh_port $ssh_banner_msg $ssh_login_grace_time
+./modules/sshsetup.sh $ssh_port $ssh_banner_msg # $ssh_login_grace_time
 
 ./modules/iptables.sh $ssh_port $tf2_allow_rcon
 
