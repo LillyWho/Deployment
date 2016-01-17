@@ -44,11 +44,16 @@ echo "#!/bin/sh
 chmod 755 /home/teamfortress/update.sh
 
 # Creates server startup script
-echo "Creating server startup script with the following settings"
-echo "#!/bin/sh
-tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir /home/teamfortress/ -steamcmd_script /home/teamfortress/tf2_ds.txt +sv_shutdown_timeout_minutes 360" > /home/teamfortress/tf.sh
-cat /home/teamfortress/tf.sh
-chmod 755 /home/teamfortress/tf.sh
+# echo "Creating server startup script with the following settings"
+# echo "#!/bin/sh
+# tf2/srcds_run -game tf +sv_pure 0 +randommap +maxplayers 24 -replay -steam_dir /home/teamfortress/ -steamcmd_script /home/teamfortress/tf2_ds.txt +sv_shutdown_timeout_minutes 360" > /home/teamfortress/tf.sh
+# cat /home/teamfortress/tf.sh
+# chmod 755 /home/teamfortress/tf.sh
+
+# Using new method startup script
+wget https://raw.githubusercontent.com/Alexandroid99/Deployment/GLaDOS-Dirsec-Main/modules/tf.sh
+cp ./tf.sh /home/teamfortress/tf.sh
+chmod 777 /home/teamfortress/tf.sh
 
 # Downloads server files
 echo "Downloading server files right now!"
@@ -57,7 +62,7 @@ chmod -R 777 /home/teamfortress/linux32
 
 # Downloads server configuration files
 echo "Cloning git configuration files from remote repository"
-git clone https://github.com/Dirsec/Server.git /home/teamfortress/configuration
+git clone https://github.com/Alexandroid99/Server.git /home/teamfortress/configuration
 
 # Adds mapcycle
 echo "Copying mapcycle.txt into proper location"
