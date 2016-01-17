@@ -36,12 +36,14 @@ Once you do that, you'll be confronted with many settings. First, give your drop
 
 ###Droplet Size
 After that, you should select the size of the droplet. The code that powers Dirsec is aggressively optimized, so it performs well on the 10 dollars per month tier. Do not use the 5 dollars per month, as it offers too little disk space.
+However, if you know that you are going to do more extreme things on the server (eg increased maxplayers, larger map collection, etc), you may want to opt for the 20 dollars per month tier.
 
 ###Choose Region
 Choose the region that's the closest to you. A closer region means less latency, or lower ping. Usually, since Dirsec is hosted in Europe, our server is in the Amsterdam region
 
 ###Select Image
-This part is important. Dirsec is only tested on a Ubuntu 14.04 LTS x64 image. That means the base distro must be Ubuntu 14.04, and it has to be 64 bit. This should be selected via default already, but make sure it's right.
+This part is important. Dirsec is tested on Ubuntu 14.04 LTS x64 and Ubuntu 15.10 x86 images. That means the base distro must be Ubuntu (as this script collection only works on Ubuntu or Debian-based Linux distros).
+Unless you decided to deploy a bigger and more expensive droplet with more RAM than 2GB-4GB+, it should be sufficient to select a 32-bit version (sometimes named 'x86').
 
 ###Other Settings
 Turn on private networking, but leave everything else (including IPv6) off for now. Once this is all done, doublecheck your settings and hit the Create Droplet button at the bottom.

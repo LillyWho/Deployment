@@ -66,7 +66,9 @@ fail2ban_bantime=2592000
 
 ./modules/timezone.sh
 
-./modules/swapadd.sh $swap_amount_gb
+# ./modules/swapadd.sh $swap_amount_gb
+# Swap takes up unnecessary space and is
+# excessive anyway if you pick the more efficient x86 arch
 
 # Begin setting up basic security infrastructure for linux server.
 ./modules/sshsetup.sh $ssh_port $ssh_banner_msg # $ssh_login_grace_time
@@ -83,7 +85,7 @@ fail2ban_bantime=2592000
 ./modules/tf2setup.sh
 
 # Restarts SSH
-service ssh restart
+service ssh restart && service sshd restart
 
 # All finished!
 echo "Congratulations! Your Dirsec-Styled Team Fortress 2 server has been setup"
