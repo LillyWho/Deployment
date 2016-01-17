@@ -31,7 +31,7 @@ echo "WARNING: THIS WILL TAKE A LONG TIME"
 echo "WARNING: THIS WILL TAKE A LONG TIME"
 echo "WARNING: THIS WILL TAKE A LONG TIME"
 echo "Now you have to wait ;)"
-git clone https://github.com/Dirsec/Mapbase.git /var/www/html/tf/maps
+git clone https://github.com/Alexandroid99/Mapbase.git /var/www/html/tf/maps
 mkdir /var/www/html/tf/replays
 
 # Deletes default apache index.html file
