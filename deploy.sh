@@ -20,7 +20,7 @@
 # 4 GB - which should be good enough for the team fortress 2 gameserver.
 # However, a bit less swap is alright - providing you are willing to sacrifice
 # some performance. Swap is configured to be optimal for gamehosting.
-swap_amount_gb=8
+# swap_amount_gb=8
 
 # Default port number is 40. It's usually better to change the ssh port number
 # to a non standard one (other then 22) - which we have already done here for
@@ -84,6 +84,12 @@ fail2ban_bantime=2592000
 
 ./modules/tf2setup.sh
 
+# Install screen for convenience
+sudo apt-get install --assume-yes screen
+
+# Create script for running screen in su'ed SSH session
+cp ./modules/prepscreen /usr/bin/
+chmod 777 /usr/bin/prepscreen
 # Restarts SSH
 service ssh restart && service sshd restart
 

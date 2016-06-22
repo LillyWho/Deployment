@@ -31,7 +31,7 @@ echo "WARNING: THIS WILL TAKE A LONG TIME"
 echo "WARNING: THIS WILL TAKE A LONG TIME"
 echo "WARNING: THIS WILL TAKE A LONG TIME"
 echo "Now you have to wait ;)"
-git clone https://github.com/Dirsec/Mapbase.git /var/www/html/tf/maps
+git clone https://github.com/Alexandroid99/Mapbase.git /var/www/html/tf/maps
 mkdir /var/www/html/tf/replays
 
 # Deletes default apache index.html file
@@ -40,7 +40,8 @@ rm -v /var/www/html/index.html
 
 # Changing ownership of directories
 echo "Changing ownership of the various directories"
-chown -R admin:admin /var/www/html/
+chown -R www-data:www-data /var/www/html/
+chmod -R 766 /var/www/html
 chown -R teamfortress:teamfortress /var/www/html/tf/replays
 
 # Restarting apache2 after setup is complete
