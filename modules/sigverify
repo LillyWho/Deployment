@@ -1,4 +1,6 @@
 #!/bin/bash
+# Gotta love nerdy nerd ASCII art. Don't freak out, it doesn't... (hehe) byte. Most of the time. Well, sometimes. OK, I'm joking.
+# It's perfectly harmless.
 echo "              .,-:;//;:=, "
 echo "          . :H@@@MM@M#H/.,+%;, "
 echo "       ,/X+ +M@@M@MM%=,-%HMMM@X/, "
