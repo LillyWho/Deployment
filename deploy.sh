@@ -84,12 +84,17 @@ fail2ban_bantime=2592000
 
 ./modules/tf2setup.sh
 
-# Install screen for convenience
+echo "Installing screen for convenience if not already installed"
 sudo apt-get install --assume-yes screen
 
-# Create script for running screen in su'ed SSH session
+echo "Creating script for running screen in su'ed SSH session"
+echo "Type "prepscreen" in order to fix screen's nagging and prepare to resume/start any screen session"
 cp ./modules/prepscreen /usr/bin/
 chmod 777 /usr/bin/prepscreen
+
+# Copy over Valve pressure signature verification binary
+sudo cp ./modules/sigverify /usr/bin/thecakeisalie
+sudo chmod 755 /usr/bin/sigverify
 # Restarts SSH
 service ssh restart && service sshd restart
 
@@ -99,6 +104,6 @@ echo "In order to start the server, change user (su) into 'teamfortress'"
 echo "and simply start a new screen session, followed by running './tf.sh'"
 echo "Enjoy!"
 echo "NOTE! SOMETIMES SSH DOES NOT WORK AFTER SETUP!!!"
-echo "in this case, run 'sudo service ssh restart' "
+echo "in this case, run 'sudo service ssh restart' from the console of the server."
 # Exit with success
 exit 0
